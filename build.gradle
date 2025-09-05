@@ -82,6 +82,10 @@ dependencies {
 
     //FixtureMonkey
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:1.1.10")
+
+    // PDF generation
+    implementation 'com.itextpdf:itext-core:8.0.5'
+    implementation 'com.itextpdf:html2pdf:5.0.5'
 }
 tasks.named('test') {
     useJUnitPlatform()
