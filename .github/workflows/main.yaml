@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: 소스 코드 체크아웃
@@ -16,17 +17,18 @@ jobs:
       - name: Docker Buildx 설정
         uses: docker/setup-buildx-action@v2
 
-      - name: Docker Hub 로그인
+      - name: Kakao Cloud Container Registry 로그인
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          registry: medi-bird.kr-central-2.kcr.dev
+          username: ${{ secrets.KCR_ACCESS_KEY_ID }}
+          password: ${{ secrets.KCR_SECRET_KEY }}
 
       - name: Docker 이미지 빌드 및 푸시
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/caring-note-api:${{ github.sha }}
+          tags: medi-bird.kr-central-2.kcr.dev/cn-api-prod/caring-note-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -39,5 +41,5 @@ jobs:
           port: ${{ secrets.VM_PORT }}
           script: |
             cd /data/caring-note-deployment
-            kubectl set image deployment/caring-note-api caring-note-api=${{ secrets.DOCKERHUB_USERNAME }}/caring-note-api:${{ github.sha }} --record
+            kubectl set image deployment/caring-note-api caring-note-api=medi-bird.kr-central-2.kcr.dev/cn-api-prod/caring-note-api:${{ github.sha }} --record
             kubectl annotate deployment/caring-note-api kubernetes.io/change-cause="이미지 업데이트: ${{ github.sha }}"
