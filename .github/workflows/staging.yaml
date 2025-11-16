@@ -3,7 +3,7 @@ name: CI/CD Pipeline (Staging)
 on:
   push:
     branches:
-      - develop # develop 브랜치 트리거
+      - staging # staging 브랜치 트리거
   workflow_dispatch:
 
 jobs:
