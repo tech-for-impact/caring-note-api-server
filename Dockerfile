@@ -1,9 +1,7 @@
 # 베이스 이미지 설정
-FROM gradle:8.10.2-jdk21 as build
+FROM gradle:8.10.2-jdk21 AS build
 
-ARG SENTRY_AUTH_TOKEN
 ARG SENTRY_PROJECT_NAME
-ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
 ENV SENTRY_PROJECT_NAME=${SENTRY_PROJECT_NAME}
 
 ENV APP_HOME=/apps
@@ -14,7 +12,9 @@ COPY gradle $APP_HOME/gradle
 RUN chmod +x gradlew
 
 COPY src $APP_HOME/src
-RUN ./gradlew clean build -x test
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN 2>/dev/null || echo "") \
+    ./gradlew clean build -x test
 
 
 FROM amazoncorretto:21.0.4

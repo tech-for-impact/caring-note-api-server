@@ -33,8 +33,9 @@ jobs:
             medi-bird.kr-central-2.kcr.dev/cn-api-stage/cn-api-stage:latest
             medi-bird.kr-central-2.kcr.dev/cn-api-stage/cn-api-stage:${{ github.sha }}
           build-args: |
-            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             SENTRY_PROJECT_NAME=caring-note-api-stage
+          secrets: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

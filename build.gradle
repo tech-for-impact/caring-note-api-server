@@ -6,10 +6,13 @@ plugins {
 }
 
 sentry {
-    includeSourceContext = true
+    def sentryAuthToken = System.getenv("SENTRY_AUTH_TOKEN")
+
+    // authToken이 있을 때만 소스 컨텍스트 업로드
+    includeSourceContext = sentryAuthToken != null && !sentryAuthToken.isEmpty()
     org = "caring-note"
     projectName = System.getenv("SENTRY_PROJECT_NAME") ?: "caring-note-api-stage"
-    authToken = System.getenv("SENTRY_AUTH_TOKEN")
+    authToken = sentryAuthToken
 }
 
 group = 'com.springboot'
