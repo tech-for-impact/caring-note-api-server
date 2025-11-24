@@ -23,6 +23,7 @@ import com.springboot.api.common.dto.ValidationError;
 import com.springboot.api.common.dto.ValidationErrorRes;
 import com.springboot.api.common.message.ExceptionMessages;
 import com.springboot.api.common.message.HttpMessages;
+import io.sentry.Sentry;
 import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,6 +91,7 @@ public class GlobalExceptionHandler extends CommonHandler {
     @ExceptionHandler(JsonProcessingException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorRes handleJsonProcessingException(JsonProcessingException ex) {
+        Sentry.captureException(ex);
         return buildErrorResponse(ExceptionMessages.FAIL_JSON_CONVERT);
     }
 
@@ -127,6 +129,7 @@ public class GlobalExceptionHandler extends CommonHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorRes handleGeneralException(Exception ex) {
+        Sentry.captureException(ex);
         return buildErrorResponse(HttpMessages.INTERNAL_SERVER_ERROR);
     }
 }
