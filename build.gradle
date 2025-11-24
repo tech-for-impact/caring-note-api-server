@@ -99,6 +99,6 @@ tasks.named('test') {
 }
 
 // Sentry 태스크가 compileJava 이후에 실행되도록 의존성 설정
-tasks.matching { it.name == 'generateSentryBundleIdJava' }.configureEach {
+tasks.matching { it.name.startsWith('sentry') || it.name.startsWith('generateSentry') }.configureEach {
     dependsOn 'compileJava'
 }
