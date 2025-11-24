@@ -12,6 +12,7 @@ import com.springboot.api.common.exception.DuplicatedEmailException;
 import com.springboot.api.common.exception.InvalidPasswordException;
 import com.springboot.api.common.exception.JsonConvertException;
 import com.springboot.api.common.exception.NoContentException;
+import io.sentry.Sentry;
 
 @RestControllerAdvice
 @Order(1)
@@ -46,6 +47,7 @@ public class UserExceptionHandler extends CommonHandler {
     @ExceptionHandler(JsonConvertException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorRes handleJsonConvertException(JsonConvertException ex) {
+        Sentry.captureException(ex);
         return buildErrorResponse(ex.getMessage());
     }
 
