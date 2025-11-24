@@ -29,6 +29,9 @@ jobs:
         with:
           push: true
           tags: medi-bird.kr-central-2.kcr.dev/cn-api-prod/caring-note-api:${{ github.sha }}
+          build-args: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            SENTRY_PROJECT_NAME=caring-note-api-prod
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

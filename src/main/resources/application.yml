@@ -111,3 +111,9 @@ management:
     web:
       exposure:
         include: health
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  environment: ${spring.profiles.active}
+  traces-sample-rate: 0.1
+  send-default-pii: false
