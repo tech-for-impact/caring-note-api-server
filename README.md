@@ -156,14 +156,40 @@
   ./gradlew bootRun
   ```
 
-  
+
 
 * Docker-compose
   ```sh
   docker-compose up --build -d
   ```
 
-  
+### 초기 관리자 계정 설정
+
+신규 환경 구축 시 관리자 계정 설정이 필요합니다.
+
+1. **Keycloak에서 사용자 추가**
+   - Keycloak Admin Console 접속
+   - 해당 realm 선택
+   - Users > Add user로 관리자 계정 생성
+
+2. **DB에서 권한 설정**
+   - 첫 로그인 시 사용자가 `counselors` 테이블에 `ROLE_NONE`으로 자동 생성됨
+   - DB에 접속하여 권한을 변경해야 함
+
+   ```sql
+   -- 생성된 사용자 확인
+   SELECT * FROM counselors;
+
+   -- 관리자 권한 부여
+   UPDATE counselors SET role_type = 'ROLE_ADMIN' WHERE id = '<user-id>';
+   ```
+
+3. **재로그인**
+   - 권한 변경 후 다시 로그인하면 관리자 권한으로 접근 가능
+
+> **참고**: 권한은 Keycloak이 아닌 DB의 `counselors` 테이블에서 관리됩니다. (`ROLE_ADMIN`, `ROLE_USER`, `ROLE_ASSISTANT`)
+
+
 
 
 
