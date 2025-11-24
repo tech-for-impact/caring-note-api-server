@@ -100,7 +100,6 @@ security:
     - "/swagger-ui.html"
     - "/h2-console/**"
     - "/actuator/health"
-    - "/*/test/sentry/**"
 keycloak:
   url: https://caringnote.co.kr/keycloak/
   admin-username: cnAdmin
