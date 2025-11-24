@@ -3,7 +3,7 @@ name: Create Release PR from Staging to Main
 on:
   push:
     branches: [staging]
-    
+
 jobs:
   create-release-pr:
     runs-on: ubuntu-latest
